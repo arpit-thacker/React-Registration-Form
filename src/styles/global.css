@@ -1,0 +1,710 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background: #f5f7fb;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 220vh;
+}
+
+.card {
+  width: 450px;
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,.15);
+
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.card h2{
+    text-align:center;
+    margin-bottom:10px;
+}
+
+input {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    outline: none;
+    font-size: 15px;
+}
+
+input:not([type="radio"]):not([type="checkbox"]) {
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease;
+}
+
+input:not([type="radio"]):not([type="checkbox"]):focus{
+
+    border-color: #2563eb;
+    /* box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); */
+
+}
+
+button{
+
+    padding:10px;
+    background:#0d6efd;
+    color:white;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:16px;
+
+}
+
+button:hover{
+
+    opacity: 0.95;
+
+}
+
+.error {
+    color: red;
+    font-size: 13px;
+    margin-top: -10px;
+}
+
+.input {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    outline: none;
+    font-size: 15px;
+}
+
+.input:focus {
+    border-color: #2563eb;
+}
+
+.error-input {
+    border: 1px solid red;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    margin-bottom: 6px;
+    font-weight: 600;
+    font-size: 15px;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.required {
+    color: #dc2626;
+    font-weight: 700;
+}
+
+.form-group select {
+    width: 100%;
+    height: 42px;
+    padding: 12px;
+
+    border: 1px solid #d9d9d9;
+    border-radius: 6px;
+
+    background: #fff;
+
+    font-size: 14px;
+    color: #333;
+
+    outline: none;
+
+    transition: all .3s ease;
+
+    cursor: pointer;
+
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.form-group select:focus {
+    border-color: #2563eb;
+    /* box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); */
+}
+
+.form-group select:disabled {
+    background: #f5f5f5;
+    color: #999;
+}
+
+.input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    outline: none;
+    font-size: 15px;
+}
+
+.input:focus {
+    border-color: #2563eb;
+}
+
+.error-input {
+    border: 1px solid red;
+}
+
+.error {
+    color: red;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.btn {
+
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    background: #3b6eea;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color .2s ease, box-shadow .2s ease, transform .1s ease;
+}
+
+.btn:hover {
+    background: #2956c8;
+}
+
+.btn:focus-visible {
+    /* outline: none; */
+    /* box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25); */
+    outline: 1px solid #3b6eea;
+    outline-offset: 3px;
+}
+
+.btn:active {
+    transform: translateY(1px);
+}
+
+.btn:hover {
+
+    background: #2956c8;
+
+}
+
+.btn:disabled {
+
+    opacity: 0.6;
+    cursor: not-allowed;
+
+}
+
+.password-container {
+    position: relative;
+}
+
+.password-container label {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #fff;
+    padding: 0 4px;
+    color: #5f6368;
+    font-size: 16px;
+    pointer-events: none;
+    transition: all 0.2s ease;
+}
+
+
+.password-container input:focus + label,
+.password-container input:not(:placeholder-shown) + label {
+    top: 0;
+    font-size: 12px;
+    color: #1a73e8;
+    transform: translateY(-50%);
+}
+
+.password-container .input {
+    width: 100%;
+    padding-right: 95px;
+}
+
+.password-actions {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.eye-btn {
+    background: none;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    cursor: pointer;
+    color: #666; /* darker icon */
+    display: flex;
+    align-items: center;
+}
+
+.eye-btn:hover {
+    color: #111827; /* even darker on hover */
+}
+
+.eye-btn:focus,
+.eye-btn:focus-visible {
+    outline: none;
+    box-shadow: none;
+    border: none;
+    color: #111827; /* keep icon dark when focused */
+}
+
+.strength.success{
+    color:#16a34a;
+    font-weight:600;
+}
+
+.strength.warning{
+    color:#f59e0b;
+    font-weight:600;
+}
+
+.strength.danger{
+    color:#dc2626;
+    font-weight:600;
+}
+
+.gender-group{
+    display:flex;
+    gap:53px;
+    margin-top:10px;
+}
+
+.gender-option{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding: 6px 10px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:500;
+    border: transparent;
+    border-radius: 8px;
+    transition: background .2s ease, border-color .2s ease;
+}
+
+/* Custom radio button */
+.gender-option input[type="radio"] {
+    -webkit-appearance: none;
+    appearance: none;
+
+    width: 2px;
+    height: 2px;
+    margin-right: 2px;
+
+    border: 1px solid #5f6368;
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+    position: relative;
+
+    transition: border-color .2s ease,
+                box-shadow .2s ease,
+                background-color .2s ease;
+}
+
+/* Keep all your existing radio styles */
+.gender-option input[type="radio"] {
+    transform: scale(0.65);   /* adjust value as needed */
+    transform-origin: center;
+}
+
+/* Selected radio button */
+/* .gender-option input[type="radio"]:checked {
+    border-color: #2563eb;
+} */
+
+/* .gender-option input[type="radio"]:checked::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    background: #2563eb;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+} */
+
+
+/* Focus ring only around the radio circle */
+/* .gender-option input[type="radio"]:focus-visible {
+    outline: none;
+    border-color: #2563eb;
+    } */
+    /* box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); */
+
+
+.form-label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:600;
+}
+
+.checkbox-container{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin:18px 0;
+}
+
+.checkbox-label{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:500;
+}
+
+.checkbox-label input{
+    width:16px;
+    height:16px;
+    cursor:pointer;
+}
+
+/* .checkbox-label input[type="checkbox"]:focus-visible {
+    outline: 0px solid #1a73e8;
+    border-radius: 4px; 
+    box-shadow: 0 0 0 4px rgba(103, 80, 164, 0.18);
+} */
+
+/* .checkbox-label input[type="checkbox"]:focus-visible {
+    outline: none;
+    border-color: #6750A4;
+    border-radius: 4px;
+    box-shadow: 0 0 0 4px rgba(103, 80, 164, 0.18);
+} */
+
+.checkbox-label input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+
+    width: 16px;
+    height: 16px;
+
+    border: 2px solid #5f6368;
+    border-radius: 4px;
+    background: #fff;
+    cursor: pointer;
+    position: relative;
+
+    transition: border-color .2s ease, background-color .2s ease, box-shadow .2s ease;
+}
+
+/* Keep all your existing checkbox styles */
+.checkbox-label input[type="checkbox"] {
+    transform: scale(0.65);   /* adjust value as needed */
+    transform-origin: center;
+}
+
+.checkbox-label input[type="checkbox"]:focus-visible {
+    outline: none;
+    border-color: #2563eb;
+    /* box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); */
+}
+
+/* Checked state */
+.checkbox-label input[type="checkbox"]:checked {
+    background: #2563eb;
+    border-color: #2563eb;
+}
+
+/* White checkmark */
+.checkbox-label input[type="checkbox"]:checked::after {
+    content: "";
+    position: absolute;
+    top: 1.5px;
+    left: 8px;
+    width: 6px;
+    height: 14px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+/* .checkbox-label input[type="checkbox"]:checked::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+} */
+
+.forgot-password{
+    display:flex;
+    justify-content:flex-end;
+    margin-bottom:10px;
+}
+
+.forgot-password a{
+    text-decoration:none;
+    color:#2563eb;
+    font-size:14px;
+    font-weight:500;
+    transition:0.3s;
+}
+
+.forgot-password a:hover{
+    text-decoration:underline;
+}
+
+.forgot-password a:focus-visible {
+    outline: none;
+    /* font-weight: 600; */
+    text-decoration: underline;
+}
+
+.divider{
+    display:flex;
+    align-items:center;
+    text-align:center;
+    margin:25px 0;
+}
+
+.divider::before,
+.divider::after{
+    content:"";
+    flex:1;
+    border-bottom:1px solid #d1d5db;
+}
+
+.divider span{
+    padding:0 15px;
+    color:#6b7280;
+    font-size:14px;
+    font-weight:600;
+    background:#fff;
+}
+
+.social-btn{
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    padding:12px 16px;
+    color: #1f2937;  
+    border:1px solid #d1d5db;
+    border-radius:8px;
+    background:#fff;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:500;
+    transition:all .25s ease;
+    margin-bottom:12px;
+}
+
+.social-btn span {
+    color: #1f2937;          
+}
+
+.social-btn:hover{
+    background:#f8fafc;
+    border-color:#2563eb;
+}
+
+.social-btn:focus-visible{
+    outline: none;
+    background:#f8fafc;
+    border-color:#2563eb;
+    /* box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); */
+}
+
+.social-btn:active{
+    transform:scale(.98);
+}
+
+.login-link{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:6px;
+
+    margin-top:5px;
+    font-size:15px;
+}
+
+.login-link span{
+    color:#6b7280;
+    font-weight: 400;
+}
+
+.login-link a{
+    color:#2563eb;
+    text-decoration:none;
+    font-weight:500;
+    transition:font-weight .2s ease;
+}
+
+
+.login-link a:hover{
+    text-decoration:underline;
+}
+
+.login-link a:focus-visible{
+    outline:none;
+    /* font-weight:600; */
+    text-decoration: underline;
+}
+
+.footer{
+    margin-top:10px;
+    padding-top:20px;
+    border-top:1px solid #e5e7eb;
+
+    text-align:center;
+}
+
+.footer p{
+    font-size:13px;
+    color:#6b7280;
+    margin-bottom:10px;
+}
+
+.footer-links{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+
+    flex-wrap:wrap;
+}
+
+.footer-links a{
+    text-decoration:none;
+    color:#2563eb;
+    font-size:13px;
+    transition:.3s;
+}
+
+.footer-links a:hover{
+    text-decoration:underline;
+}
+
+.footer-links a:focus-visible{
+    outline: none;
+    /* font-weight: 600; */
+    text-decoration: underline;
+}
+
+.footer-links span{
+    color:#9ca3af;
+}
+
+
+.searchable-dropdown {
+    position: relative;
+}
+
+.dropdown-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #d9d9d9;
+    border-radius: 6px;
+    margin-top: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 20;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.dropdown-option {
+    padding: 10px 12px;
+    cursor: pointer;
+}
+
+.dropdown-option:hover,
+.dropdown-option.active {
+    background: #f5f7fb;
+}
+
+.highlight {
+    background: #fef08a;
+    color: #111827;
+    font-weight: 600;
+    padding: 0 2px;
+    border-radius: 2px;
+}
+
+.dropdown-options {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.input-wrapper { /* Like Google */
+    position: relative; /*tells the browser, "Use this element as the starting point for positioning anything inside it."*/
+                        /* makes the parent element the reference point for its child elements. */
+}
+
+.input-wrapper label { /* Like Google */
+    position: absolute; /* it becomes independent / removes the element from the normal layout and lets you place it exactly where you want inside its parent. */
+    top: 50%; /* Move the top edge of the label to the middle of the parent. */
+    left: var(--label-left, 14px); /* Keep the label 14px away from the left border. */
+    transform: translateY(-50%); /* Move the label upward by half of its own height so it becomes perfectly centered. */
+
+    background: white;
+    padding: 0 4px;
+
+    color: #5f6368;
+    font-size: 16px;
+
+    pointer-events: none; /* controls whether an element can receive mouse events like click, hover, or drag. */
+
+    transition: all 0.2s ease;
+}
+
+.input-wrapper input:focus + label, /* Like Google */
+.input-wrapper input:not(:placeholder-shown) + label { /* Like Google */
+    top: 0; /* Move the top of the label to the top of the wrapper. */
+    transform: translateY(-50%); /* Move the label upward by 50% of its own height. */
+    font-size: 12px;
+    color: #1a73e8;
+}
+
+/*
+    Before Focus:
+    top: 50% -> Go to the middle of the wrapper
+    translateY(-50%) -> Move up half of the label's height to center it.
+
+
+    After Focus:
+    top: 0 -> Go to the top of the wrapper
+    translateY(-50%) -> Move up half of the label's height so it sits neatly on the border.
+*/
