@@ -1,10 +1,7 @@
-/* import ReactCountryFlag from "react-country-flag"; */
-
 import { useRef, useState } from "react";
 import { countryOptions } from "../data/countryCode";
 
 import "./phoneInput.css";
-/* import BasicCustomSelect from "./CustomSelect"; */
 import CountrySelect from "./CountrySelect";
 
 interface PhoneInputProps {
@@ -17,16 +14,6 @@ interface PhoneInputProps {
   onMobileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
-
-/* const options = countryOptions.map((option) => ({
-  value: option.value,
-  label: (
-    <span className="country-option-label">
-      <ReactCountryFlag countryCode={option.countryCode} svg />
-      <span>{option.value}</span>
-    </span>
-  ),
-})); */
 
 function PhoneInput({
   countryCode,
@@ -42,6 +29,10 @@ function PhoneInput({
 
   const mobileInputRef = useRef<HTMLInputElement>(null);
 
+  const selectedCountry = countryOptions.find(
+    (country) => country.value === countryCode,
+  );
+
   return (
     <div className="form-group">
       <div className="input-wrapper phone-wrapper">
@@ -52,7 +43,7 @@ function PhoneInput({
               value={countryCode}
               isOpen={isCountryOpen}
               setIsOpen={setIsCountryOpen}
-              /* isMobileFocused={isMobileFocused} */
+              mobileInputRef={mobileInputRef}
               onChange={(value) => {
                 onCountryChange({
                   target: {
@@ -61,6 +52,7 @@ function PhoneInput({
                 } as React.ChangeEvent<HTMLSelectElement>);
 
                 setIsMobileFocused(true);
+
                 requestAnimationFrame(() => {
                   mobileInputRef.current?.focus();
                 });
@@ -76,15 +68,9 @@ function PhoneInput({
             type="tel"
             placeholder=" "
             value={mobile}
-            // disabled={isCountryOpen}
             readOnly={isCountryOpen}
             onChange={onMobileChange}
             onKeyDown={(e) => {
-              /* if (e.ctrlKey && e.key.toLowerCase() === "c") {
-                e.preventDefault();
-                setIsCountryOpen((prev) => !prev);
-              } */
-
               if (e.ctrlKey && e.key.toLowerCase() === "c") {
                 e.preventDefault();
 
@@ -99,13 +85,19 @@ function PhoneInput({
 
                   return next;
                 });
+
+                return;
               }
 
               onKeyDown?.(e);
             }}
             onFocus={() => setIsMobileFocused(true)}
-            onBlur={() => setIsMobileFocused(false)}
-            maxLength={10}
+            onBlur={() => {
+              if (!isCountryOpen) {
+                setIsMobileFocused(false);
+              }
+            }}
+            maxLength={selectedCountry?.phoneLength}
           />
 
           <label htmlFor="mobile">
@@ -114,6 +106,7 @@ function PhoneInput({
           </label>
         </div>
       </div>
+
       {error && <p className="error">{error}</p>}
     </div>
   );
