@@ -3,8 +3,16 @@ import TextInput from "../components/TextInput";
 import Button from "../components/Button";
 import PasswordInput from "../components/PasswordInput";
 import { toast } from "react-toastify";
-import { isStrongPassword, getPasswordStrength, getPasswordMatchStatus, validatePassword, } from "../utils/passwordValidation";
-import type { RegistrationFormData, RegistrationErrors } from "../types/registration";
+import {
+  isStrongPassword,
+  getPasswordStrength,
+  getPasswordMatchStatus,
+  validatePassword,
+} from "../utils/passwordValidation";
+import type {
+  RegistrationFormData,
+  RegistrationErrors,
+} from "../types/registration";
 import { validateRegistration } from "../utils/registrationValidation";
 import { getCurrentDateTime } from "../utils/dateTime";
 import { stateCityData } from "../data/locationData";
@@ -87,25 +95,23 @@ function RegistrationForm() {
       value = value.slice(0, 20);
     }
 
-  if (name === "email") {
-    value = value.replace(/\s/g, "");
-    value = value.toLowerCase();
-  }
+    if (name === "email") {
+      value = value.replace(/\s/g, "");
+      value = value.toLowerCase();
+    }
 
-  if (name === "companyName") {
-    value = value.trimStart();
-    value = value.replace(/[^A-Za-z0-9\s.&'-]/g, "");
-    value = value.replace(/\s+/g, " ");
+    if (name === "companyName") {
+      value = value.trimStart();
+      value = value.replace(/[^A-Za-z0-9\s.&'-]/g, "");
+      value = value.replace(/\s+/g, " ");
 
-    value = value
-    .split(" ")
-    .map((word) => 
-      word.charAt(0).toUpperCase() + word.slice(1)
-    )
-    .join(" ");
+      value = value
+        .split(" ")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
 
-    value = value.slice(0, 45);
-  }
+      value = value.slice(0, 45);
+    }
 
     setFormData((prev) => ({
       ...prev,
@@ -363,7 +369,8 @@ function RegistrationForm() {
           onMobileChange={(e) =>
             setFormData((prev) => ({
               ...prev,
-              mobile: e.target.value.replace(/\D/g, "").slice(0, 10),
+              // mobile: e.target.value,
+              mobile: e.target.value.replace(/\D/g, "")
             }))
           }
         />

@@ -28,22 +28,38 @@ function PhoneInput({
   const [isMobileFocused, setIsMobileFocused] = useState(false);
 
   const mobileInputRef = useRef<HTMLInputElement>(null);
-
+  const restoreFocusRef = useRef(false);
   const selectedCountry = countryOptions.find(
-    (country) => country.value === countryCode,
+    (country) => country?.value === countryCode,
   );
+
+  const restoreMobileFocus = () => {
+    restoreFocusRef.current = true;
+    setIsMobileFocused(true);
+
+    requestAnimationFrame(() => {
+      mobileInputRef.current?.focus();
+    });
+  };
 
   return (
     <div className="form-group">
       <div className="input-wrapper phone-wrapper">
-        <div className="phone-container">
-          {isMobileFocused && (
+        <div
+          className={`phone-container ${
+            isMobileFocused || isCountryOpen || mobile
+              ? "phone-container-focused"
+              : ""
+          }`}
+        >
+          {(isMobileFocused || isCountryOpen) && (
             <CountrySelect
               options={countryOptions}
               value={countryCode}
               isOpen={isCountryOpen}
               setIsOpen={setIsCountryOpen}
               mobileInputRef={mobileInputRef}
+              onClose={restoreMobileFocus}
               onChange={(value) => {
                 onCountryChange({
                   target: {
@@ -51,11 +67,7 @@ function PhoneInput({
                   },
                 } as React.ChangeEvent<HTMLSelectElement>);
 
-                setIsMobileFocused(true);
-
-                requestAnimationFrame(() => {
-                  mobileInputRef.current?.focus();
-                });
+                restoreMobileFocus();
               }}
             />
           )}
@@ -70,6 +82,7 @@ function PhoneInput({
             value={mobile}
             readOnly={isCountryOpen}
             onChange={onMobileChange}
+            minLength={selectedCountry?.phoneLength}
             onKeyDown={(e) => {
               if (e.ctrlKey && e.key.toLowerCase() === "c") {
                 e.preventDefault();
@@ -78,9 +91,7 @@ function PhoneInput({
                   const next = !prev;
 
                   if (!next) {
-                    requestAnimationFrame(() => {
-                      mobileInputRef.current?.focus();
-                    });
+                    restoreMobileFocus();
                   }
 
                   return next;
@@ -91,16 +102,24 @@ function PhoneInput({
 
               onKeyDown?.(e);
             }}
-            onFocus={() => setIsMobileFocused(true)}
+            onFocus={() => {
+              setIsMobileFocused(true);
+              restoreFocusRef.current = false;
+            }}
             onBlur={() => {
-              if (!isCountryOpen) {
-                setIsMobileFocused(false);
+              if (restoreFocusRef.current) {
+                restoreFocusRef.current = false;
+                return;
               }
+
+              setIsMobileFocused(false);
             }}
             maxLength={selectedCountry?.phoneLength}
           />
 
-          <label htmlFor="mobile">
+          <label
+            htmlFor="mobile" /* className={isMobileFocused || isCountryOpen ? "phone-label-active" : ""} */
+          >
             Mobile Number
             {required && <span className="required">*</span>}
           </label>

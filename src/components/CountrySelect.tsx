@@ -10,6 +10,7 @@ interface CountrySelectProps {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   mobileInputRef: React.RefObject<HTMLInputElement | null>;
   onChange: (value: string) => void;
+  onClose?: () => void;
 }
 
 function CountrySelect({
@@ -17,8 +18,9 @@ function CountrySelect({
   value,
   isOpen,
   setIsOpen,
-  mobileInputRef,
+  /* mobileInputRef, */
   onChange,
+  onClose,
 }: CountrySelectProps) {
   const selectedCountry = options.find((country) => country.value === value);
   const [search, setSearch] = useState("");
@@ -34,9 +36,16 @@ function CountrySelect({
     );
   });
 
+  console.log(filteredCountries);
+
   const resetDropdown = () => {
     setSearch("");
-    setActiveIndex(filteredCountries.length > 0 ? 0 : -1);
+    setActiveIndex(-1);
+    /* setActiveIndex(filteredCountries.length > 0 ? 0 : -1); */
+  };
+
+  const restoreFocusToInput = () => {
+    onClose?.();
   };
 
   const selectCountry = (countryValue: string) => {
@@ -45,10 +54,7 @@ function CountrySelect({
     setIsOpen(false);
 
     resetDropdown();
-
-    requestAnimationFrame(() => {
-      mobileInputRef.current?.focus();
-    });
+    restoreFocusToInput();
   };
 
   useEffect(() => {
@@ -56,28 +62,34 @@ function CountrySelect({
       resetDropdown();
 
       requestAnimationFrame(() => {
-        searchInputRef.current?.focus();
+        searchInputRef.current?.focus({
+          preventScroll: true,
+        });
       });
     }
   }, [isOpen]);
 
   useEffect(() => {
     if (isOpen) {
-      setActiveIndex(filteredCountries.length > 0 ? 0 : -1);
+      setActiveIndex(/* filteredCountries.length > 0 ? 0 :  */ -1);
     }
   }, [search, isOpen, filteredCountries.length]);
 
   useEffect(() => {
-    if (activeIndex >= 0) {
+    if (activeIndex >= 0 && optionRefs.current[activeIndex]) {
       optionRefs.current[activeIndex]?.scrollIntoView({
         block: "nearest",
-        behavior: "auto",
+        behavior: "smooth",
       });
     }
   }, [activeIndex]);
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
+      if (!isOpen) {
+        return;
+      }
+
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
@@ -85,10 +97,7 @@ function CountrySelect({
         setIsOpen(false);
 
         resetDropdown();
-
-        requestAnimationFrame(() => {
-          mobileInputRef.current?.focus();
-        });
+        restoreFocusToInput();
       }
     };
 
@@ -97,7 +106,7 @@ function CountrySelect({
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
-  }, [mobileInputRef]);
+  }, [isOpen]);
 
   return (
     <div className="custom-select" ref={dropdownRef}>
@@ -106,7 +115,16 @@ function CountrySelect({
         className="custom-select-header"
         onMouseDown={(e) => {
           e.preventDefault();
-          setIsOpen((prev) => !prev);
+
+          setIsOpen((prev) => {
+            const next = !prev;
+
+            if (!next) {
+              restoreFocusToInput();
+            }
+
+            return next;
+          });
         }}
       >
         {selectedCountry && (
@@ -132,6 +150,13 @@ function CountrySelect({
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               onMouseDown={(e) => e.stopPropagation()}
+              onBlur={(e) => {
+                if (!dropdownRef.current?.contains(e.relatedTarget as Node)) {
+                  setIsOpen(false);
+                  resetDropdown();
+                  restoreFocusToInput();
+                }
+              }}
               onKeyDown={(e) => {
                 if (e.key === "Escape") {
                   e.preventDefault();
@@ -139,10 +164,7 @@ function CountrySelect({
                   setIsOpen(false);
 
                   resetDropdown();
-
-                  requestAnimationFrame(() => {
-                    mobileInputRef.current?.focus();
-                  });
+                  restoreFocusToInput();
 
                   return;
                 }
@@ -153,10 +175,7 @@ function CountrySelect({
                   setIsOpen(false);
 
                   resetDropdown();
-
-                  requestAnimationFrame(() => {
-                    mobileInputRef.current?.focus();
-                  });
+                  restoreFocusToInput();
 
                   return;
                 }
@@ -201,7 +220,7 @@ function CountrySelect({
           <div className="country-list">
             {filteredCountries.map((country, index) => (
               <div
-                key={country.value}
+                key={`${country.countryCode}-${country.value}`}
                 ref={(el) => {
                   optionRefs.current[index] = el;
                 }}
