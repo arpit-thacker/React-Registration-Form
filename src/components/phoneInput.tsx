@@ -50,13 +50,13 @@ function PhoneInput({
     <div className="form-group">
       <div className="input-wrapper phone-wrapper">
         <div
-          className={`phone-container ${
-            isMobileFocused || isCountryOpen || mobile
+          className= {`phone-container ${
+            isMobileFocused || isCountryOpen /* || mobile */
               ? "phone-container-focused"
               : ""
           }`}
         >
-          {(isMobileFocused || isCountryOpen) && (
+         {(isMobileFocused || isCountryOpen) && (
             <CountrySelect
               options={countryOptions}
               value={countryCode}

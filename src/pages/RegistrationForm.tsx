@@ -161,7 +161,16 @@ function RegistrationForm() {
       ...prev,
       [name]: checked,
     }));
+
+    if (name === "agreeTerms" && checked) {
+      setErrors((prev) => ({
+        ...prev,
+        agreeTerms: "",
+      }));
+    }
   };
+
+  
 
   /* const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   const { name, value } = e.target;
@@ -305,7 +314,8 @@ function RegistrationForm() {
     formData.password,
     formData.confirmPassword,
   );
-
+  
+  const genderMaleRef = useRef<HTMLInputElement>(null);
   const companyInputRef = useRef<HTMLInputElement>(null);
   const stateInputRef = useRef<HTMLInputElement>(null);
 
@@ -376,7 +386,7 @@ function RegistrationForm() {
             setFormData((prev) => ({
               ...prev,
               // mobile: e.target.value,
-              mobile: e.target.value.replace(/\D/g, "")
+              mobile: e.target.value.replace(/\D/g, ""),
             }))
           }
         />
@@ -635,11 +645,17 @@ function RegistrationForm() {
               placeholder=" "
               value={formData.city}
               onChange={(e) => {
+                const value = e.target.value;
                 setFormData((prev) => ({
                   ...prev,
-                  city: e.target.value,
+                  city: value,
                 }));
-
+                if (value.trim()) {
+                  setErrors((prev) => ({
+                    ...prev,
+                    city: "",
+                  }));
+                }
                 setShowCityOptions(true);
                 setActiveCityIndex(-1);
               }}
@@ -654,6 +670,11 @@ function RegistrationForm() {
                 }, 150);
               }}
               onKeyDown={(e) => {
+                if (e.key === "Tab" && !e.shiftKey) {
+                  setShowCityOptions(false);
+                  return;
+                }
+
                 // Down Arrow
                 if (e.key === "ArrowDown") {
                   e.preventDefault();
@@ -681,10 +702,20 @@ function RegistrationForm() {
                       ...prev,
                       city: selectedCity,
                     }));
+
+                    setErrors((prev) => ({
+                      ...prev,
+                      city: "",
+                    }));
                   } else if (filteredCities.length > 0) {
                     setFormData((prev) => ({
                       ...prev,
                       city: filteredCities[0],
+                    }));
+
+                    setErrors((prev) => ({
+                      ...prev,
+                      city: "",
                     }));
                   }
 
@@ -717,6 +748,11 @@ function RegistrationForm() {
                     setFormData((prev) => ({
                       ...prev,
                       city,
+                    }));
+
+                    setErrors((prev) => ({
+                      ...prev,
+                      city: "",
                     }));
 
                     setShowCityOptions(false);
@@ -790,9 +826,15 @@ function RegistrationForm() {
           onChange={(value) => {
             setFormData((prev) => ({
               ...prev,
-
               gender: value,
             }));
+
+            if (value) {
+              setErrors((prev) => ({
+                ...prev,
+                gender: "",
+              }));
+            }
           }}
         />
 

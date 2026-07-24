@@ -698,13 +698,26 @@ button:hover{
     color: #1a73e8;
 }
 
-/*
-    Before Focus:
-    top: 50% -> Go to the middle of the wrapper
-    translateY(-50%) -> Move up half of the label's height to center it.
+.password-requirements {
+    margin-top: 8px;
+    padding: 10px 12px;
+    border: 1px solid #d9d9d9;
+    border-radius: 6px;
+    background: #fafafa;
+}
 
+.requirement-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    line-height: 1.8;
+}
 
-    After Focus:
-    top: 0 -> Go to the top of the wrapper
-    translateY(-50%) -> Move up half of the label's height so it sits neatly on the border.
-*/
+.requirement-item.completed {
+    color: #16a34a;
+}
+
+.requirement-item.pending {
+    color: #6b7280;
+}
