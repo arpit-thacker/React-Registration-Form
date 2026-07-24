@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import ReactCountryFlag from "react-country-flag";
 import { FaChevronDown } from "react-icons/fa";
 import type { CountryOption } from "../data/countryCode";
+import { highlightMatch } from "../utils/highlightMatch";
 
 interface CountrySelectProps {
   options: CountryOption[];
@@ -11,6 +12,8 @@ interface CountrySelectProps {
   mobileInputRef: React.RefObject<HTMLInputElement | null>;
   onChange: (value: string) => void;
   onClose?: () => void;
+  companyInputRef: React.RefObject<HTMLInputElement | null>;
+  stateInputRef: React.RefObject<HTMLInputElement | null>;
 }
 
 function CountrySelect({
@@ -18,9 +21,11 @@ function CountrySelect({
   value,
   isOpen,
   setIsOpen,
-  /* mobileInputRef, */
+  mobileInputRef,
   onChange,
   onClose,
+  companyInputRef,
+  /* stateInputRef, */
 }: CountrySelectProps) {
   const selectedCountry = options.find((country) => country.value === value);
   const [search, setSearch] = useState("");
@@ -28,6 +33,7 @@ function CountrySelect({
   const searchInputRef = useRef<HTMLInputElement>(null);
   const optionRefs = useRef<(HTMLDivElement | null)[]>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const skipRestoreFocusRef = useRef(false);
 
   const filteredCountries = options.filter((country) => {
     return (
@@ -45,6 +51,12 @@ function CountrySelect({
   };
 
   const restoreFocusToInput = () => {
+
+    if (skipRestoreFocusRef.current) {
+      skipRestoreFocusRef.current = false;
+      return;
+    }
+
     onClose?.();
   };
 
@@ -157,7 +169,30 @@ function CountrySelect({
                   restoreFocusToInput();
                 }
               }}
+
+              
               onKeyDown={(e) => {
+
+                if (!e.shiftKey && e.key === "Tab") {
+                  e.preventDefault();
+                  skipRestoreFocusRef.current = true;
+                  setIsOpen(false);
+                  resetDropdown();
+                  requestAnimationFrame(() => {
+                    mobileInputRef.current?.focus();
+                  });
+                  return;
+                }
+
+                if (e.shiftKey && e.key === "Tab") {
+                  e.preventDefault();
+                  skipRestoreFocusRef.current = true;
+                  setIsOpen(false);
+                  resetDropdown();
+                  companyInputRef.current?.focus();
+                  return;
+                }
+
                 if (e.key === "Escape") {
                   e.preventDefault();
 
@@ -234,9 +269,9 @@ function CountrySelect({
               >
                 <ReactCountryFlag countryCode={country.countryCode} svg />
 
-                <span className="country-name">{country.name}</span>
+                <span className="country-name">{highlightMatch(country.name, search)}</span>
 
-                <span className="country-code">{country.value}</span>
+                <span className="country-code">{highlightMatch(country.value, search)}</span>
               </div>
             ))}
           </div>

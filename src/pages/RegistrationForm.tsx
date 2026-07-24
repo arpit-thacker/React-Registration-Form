@@ -306,6 +306,9 @@ function RegistrationForm() {
     formData.confirmPassword,
   );
 
+  const companyInputRef = useRef<HTMLInputElement>(null);
+  const stateInputRef = useRef<HTMLInputElement>(null);
+
   return (
     <div className="container">
       <form className="card" onSubmit={handleSubmit}>
@@ -345,6 +348,7 @@ function RegistrationForm() {
         />
 
         <TextInput
+          ref={companyInputRef}
           label="Company Name"
           required
           type="text"
@@ -360,6 +364,8 @@ function RegistrationForm() {
           countryCode={formData.countryCode}
           mobile={formData.mobile}
           error={errors.mobile}
+          companyInputRef={companyInputRef}
+          stateInputRef={stateInputRef}
           onCountryChange={(e) =>
             setFormData((prev) => ({
               ...prev,
@@ -459,6 +465,7 @@ function RegistrationForm() {
         <div className="form-group searchable-dropdown">
           <div className="input-wrapper">
             <input
+              ref={stateInputRef}
               type="text"
               id="state"
               name="state"

@@ -13,6 +13,8 @@ interface PhoneInputProps {
   onCountryChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   onMobileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  companyInputRef: React.RefObject<HTMLInputElement | null>;
+  stateInputRef: React.RefObject<HTMLInputElement | null>;
 }
 
 function PhoneInput({
@@ -23,6 +25,8 @@ function PhoneInput({
   onCountryChange,
   onMobileChange,
   onKeyDown,
+  companyInputRef,
+  stateInputRef,
 }: PhoneInputProps) {
   const [isCountryOpen, setIsCountryOpen] = useState(false);
   const [isMobileFocused, setIsMobileFocused] = useState(false);
@@ -59,6 +63,7 @@ function PhoneInput({
               isOpen={isCountryOpen}
               setIsOpen={setIsCountryOpen}
               mobileInputRef={mobileInputRef}
+              stateInputRef={stateInputRef}
               onClose={restoreMobileFocus}
               onChange={(value) => {
                 onCountryChange({
@@ -69,6 +74,7 @@ function PhoneInput({
 
                 restoreMobileFocus();
               }}
+              companyInputRef={companyInputRef}
             />
           )}
 
@@ -100,8 +106,15 @@ function PhoneInput({
                 return;
               }
 
+              if (e.shiftKey && e.key === "Tab") {
+                e.preventDefault();
+                setIsCountryOpen(true);
+                return;
+              }
+
               onKeyDown?.(e);
             }}
+
             onFocus={() => {
               setIsMobileFocused(true);
               restoreFocusRef.current = false;

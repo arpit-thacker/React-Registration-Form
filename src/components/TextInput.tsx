@@ -1,6 +1,7 @@
+import { forwardRef } from "react";
 import type { TextInputProps } from "../types/input";
 
-function TextInput({
+/* function TextInput */const TextInput = forwardRef<HTMLInputElement, TextInputProps>(({
   label,
   type,
   name,
@@ -12,7 +13,7 @@ function TextInput({
   onChange,
   onKeyDown,
   tabIndex,
-}: TextInputProps) {
+}: TextInputProps, ref) => {
   /* return (
         <div className="form-group">
             <label>
@@ -44,6 +45,7 @@ function TextInput({
     <div className="form-group">
       <div className="input-wrapper">
         <input
+          ref={ref}
           type={type}
           name={name}
           /* placeholder={placeholder} */
@@ -68,4 +70,5 @@ function TextInput({
   );
 }
 
+);
 export default TextInput;
