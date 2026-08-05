@@ -170,8 +170,6 @@ function RegistrationForm() {
     }
   };
 
-  
-
   /* const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   const { name, value } = e.target;
 
@@ -314,8 +312,8 @@ function RegistrationForm() {
     formData.password,
     formData.confirmPassword,
   );
-  
-  const genderMaleRef = useRef<HTMLInputElement>(null);
+
+  /* const genderMaleRef = useRef<HTMLInputElement>(null); -------------------------------------------------------------- */
   const companyInputRef = useRef<HTMLInputElement>(null);
   const stateInputRef = useRef<HTMLInputElement>(null);
 
@@ -382,13 +380,21 @@ function RegistrationForm() {
               countryCode: e.target.value,
             }))
           }
-          onMobileChange={(e) =>
+          onMobileChange={(e) => {
+            const value = e.target.value.replace(/\D/g, "");
+
             setFormData((prev) => ({
               ...prev,
-              // mobile: e.target.value,
-              mobile: e.target.value.replace(/\D/g, ""),
-            }))
-          }
+              mobile: value,
+            }));
+
+            if (value.trim()) {
+              setErrors((prev) => ({
+                ...prev,
+                mobile: "",
+              }));
+            }
+          }}
         />
         {/* <div className="form-group searchable-dropdown">
   <label htmlFor="state">
@@ -482,11 +488,22 @@ function RegistrationForm() {
               placeholder=" "
               value={formData.state}
               onChange={(e) => {
+                const value = e.target.value;
+
                 setFormData((prev) => ({
                   ...prev,
-                  state: e.target.value,
+                  state: value,
                   city: "",
                 }));
+
+                if (value.trim()) {
+                  setErrors((prev) => ({
+                    ...prev,
+                    state: "",
+                    city: "",
+                  }));
+                }
+
                 setShowStateOptions(true);
                 setActiveStateIndex(-1);
               }}
@@ -523,7 +540,7 @@ function RegistrationForm() {
                   }
                 }
               }}
-              className="input"
+              className={`input ${errors.state ? "input-error" : ""}`}
             />
 
             <label htmlFor="state">
@@ -545,6 +562,12 @@ function RegistrationForm() {
                       state,
                       city: "",
                     }));
+
+                    setErrors((prev) => ({
+                      ...prev,
+                      state: "",
+                    }));
+
                     setShowStateOptions(false);
                   }}
                 >
@@ -727,7 +750,7 @@ function RegistrationForm() {
                   setShowCityOptions(false);
                 }
               }}
-              className="input"
+              className={`input ${errors.city ? "input-error" : ""}`}
               disabled={!formData.state}
             />
 
@@ -1002,6 +1025,7 @@ function RegistrationForm() {
             </a>
           </div>
         </div>
+        
       </form>
     </div>
   );
